@@ -19,10 +19,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.dastan.cake.data.CakeInfo
+import com.dastan.cake.data.CakeOrder
 import com.dastan.cake.domain.InfoViewModel
+import com.dastan.cake.domain.OrderViewModel
 
 @Composable
-fun EachCakeScreen(viewModel: InfoViewModel,navController: NavController, cakeInfo:CakeInfo){
+fun EachCakeScreen(viewModel: InfoViewModel,navController: NavController, cakeInfo:CakeInfo, orderViewModel: OrderViewModel){
     val choose = remember { mutableStateOf(0) }
     val selectedWeight = when (choose.value) {
         0 -> cakeInfo.weight?.weightSmall?: "N/A"
@@ -47,7 +49,18 @@ fun EachCakeScreen(viewModel: InfoViewModel,navController: NavController, cakeIn
         Row{
             Text(text = selectedPrice)
             Box(modifier = Modifier.clickable {
+                orderViewModel.addCake(
 
+                    CakeOrder(
+                        //id= cakeInfo.id!!.toLong(),
+                        title = cakeInfo.title?:"",
+                        description = cakeInfo.description?:"",
+                        price = selectedPrice,
+                        weight = selectedWeight,
+                        quantity = 1
+                    )
+                )
+                navController.navigateUp()
             }){
                 Row{
                     Icon(Icons.Default.Add, contentDescription = null)

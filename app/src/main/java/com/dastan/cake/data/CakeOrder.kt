@@ -14,4 +14,7 @@ data class CakeOrder(@PrimaryKey(autoGenerate = true)
                      @ColumnInfo(name="cake-price")
                      val price:String="",
                      @ColumnInfo(name="cake-weight")
-                     val weight:String="", )
+                     val weight:String="",
+                     @ColumnInfo(name="cake-quantity")
+                     val quantity:Int=0,
+    )

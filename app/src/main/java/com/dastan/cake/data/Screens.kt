@@ -8,4 +8,5 @@ sealed class Screens (val route:String){
         fun createRoute(cakeInfo: CakeInfo): String = "EachCake/${Uri.encode(Gson().toJson(cakeInfo))}"
     }
     object HomeScreen: Screens("Home")
+    object CartScreen: Screens("Cart")
 }

@@ -44,6 +44,18 @@ fun HomeScreen(navController: NavController, viewModel: InfoViewModel) {
                 Items(result.listCake, navController)
             }
         }
+
+        Column(verticalArrangement = Arrangement.Bottom, horizontalAlignment = Alignment.End){
+            Box(modifier = Modifier
+                .padding(8.dp)
+                .clip(shape = RoundedCornerShape(10))
+                .background(color = MaterialTheme.colorScheme.background)
+                .clickable {
+                    navController.navigate(Screens.CartScreen.route)
+                }){
+                    Text("Корзина")
+            }
+        }
     }
 }
 

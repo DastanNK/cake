@@ -20,6 +20,8 @@ import androidx.navigation.navArgument
 import com.dastan.cake.data.CakeInfo
 import com.dastan.cake.data.Screens
 import com.dastan.cake.domain.InfoViewModel
+import com.dastan.cake.domain.OrderViewModel
+import com.dastan.cake.screen.CartScreen
 import com.dastan.cake.screen.EachCakeScreen
 import com.dastan.cake.screen.HomeScreen
 import com.dastan.cake.ui.theme.CakeTheme
@@ -41,10 +43,11 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MyApp(){
     val navController= rememberNavController()
-    val viewModel:InfoViewModel= viewModel()
+    val infoViewModel:InfoViewModel= viewModel()
+    val orderViewModel:OrderViewModel= viewModel()
     NavHost(navController=navController, startDestination = Screens.HomeScreen.route){
         composable(Screens.HomeScreen.route){
-            HomeScreen(navController, viewModel)
+            HomeScreen(navController, infoViewModel)
         }
         composable(
             route = Screens.EachCakeScreen.route,
@@ -54,7 +57,10 @@ fun MyApp(){
         ) { navBackStackEntry ->
             val cakeJson = navBackStackEntry.arguments?.getString("cakeInfo")
             val cakeInfo = Gson().fromJson(cakeJson, CakeInfo::class.java)
-            EachCakeScreen(viewModel, navController, cakeInfo)
+            EachCakeScreen(infoViewModel, navController, cakeInfo, orderViewModel)
+        }
+        composable(Screens.CartScreen.route){
+            CartScreen(navController, orderViewModel)
         }
     }
 

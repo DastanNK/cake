@@ -7,20 +7,20 @@ import kotlinx.coroutines.flow.Flow
 abstract class CakeDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    abstract suspend fun addACake(wishEntity: Wish)
+    abstract suspend fun addACake(cakeOrderEntity: CakeOrder)
 
     // Loads all wishes from the wish table
-    @Query("Select * from `wish-table`")
-    abstract fun getAllCakes(): Flow<List<Wish>>
+    @Query("Select * from `cake-table`")
+    abstract fun getAllCakes(): Flow<List<CakeOrder>>
 
     @Update
-    abstract suspend fun updateACake(wishEntity: Wish)
+    abstract suspend fun updateACake(cakeOrderEntity: CakeOrder)
 
     @Delete
-    abstract suspend fun deleteACake(wishEntity: Wish)
+    abstract suspend fun deleteACake(cakeOrderEntity: CakeOrder)
 
-    @Query("Select * from `wish-table` where id=:id")
-    abstract fun getACakeById(id:Long): Flow<Wish>
+    @Query("Select * from `cake-table` where id=:id")
+    abstract fun getACakeById(id:Long): Flow<CakeOrder>
 
 
 }
