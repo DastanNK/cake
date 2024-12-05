@@ -15,9 +15,16 @@ class OrderViewModel(private val cakeOrderRepository: CakeOrderRepository=Graph.
         return cakeOrderRepository.getACakeById(id)
     }
 
-    fun updateCake(cakeOrder: CakeOrder){
+    fun increaseQuantityCake(cakeOrder: CakeOrder){
         viewModelScope.launch(Dispatchers.IO) {
-            cakeOrderRepository.updateACake(cakeOrder= cakeOrder)
+            val updatedCakeOrder = cakeOrder.copy(quantity = cakeOrder.quantity + 1)
+            cakeOrderRepository.updateACake(updatedCakeOrder)
+        }
+    }
+    fun decreaseQuantityCake(cakeOrder: CakeOrder){
+        viewModelScope.launch(Dispatchers.IO) {
+            val updatedCakeOrder = cakeOrder.copy(quantity = cakeOrder.quantity - 1)
+            cakeOrderRepository.updateACake(updatedCakeOrder)
         }
     }
 
@@ -31,6 +38,12 @@ class OrderViewModel(private val cakeOrderRepository: CakeOrderRepository=Graph.
 
     init {
         viewModelScope.launch {
+            getAllCakes = cakeOrderRepository.getAllCakes()
+        }
+    }
+    fun deleteCake(cakeOrder: CakeOrder){
+        viewModelScope.launch(Dispatchers.IO) {
+            cakeOrderRepository.deleteACake(cakeOrder= cakeOrder)
             getAllCakes = cakeOrderRepository.getAllCakes()
         }
     }
