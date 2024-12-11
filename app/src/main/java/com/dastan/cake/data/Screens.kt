@@ -9,4 +9,6 @@ sealed class Screens (val route:String){
     }
     object HomeScreen: Screens("Home")
     object CartScreen: Screens("Cart")
+    object CustomScreen: Screens("Custom")
+
 }

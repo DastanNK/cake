@@ -17,4 +17,6 @@ data class CakeOrder(@PrimaryKey(autoGenerate = true)
                      val weight:String="",
                      @ColumnInfo(name="cake-quantity")
                      val quantity:Int=0,
+                     @ColumnInfo(name="cake-imageUri")
+                     val imageUri:String=""
     )

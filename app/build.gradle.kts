@@ -2,6 +2,8 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
+    id ("dagger.hilt.android.plugin")
+    id ("com.google.gms.google-services")
 }
 
 android {
@@ -48,6 +50,19 @@ android {
 }
 
 dependencies {
+    implementation(platform("com.google.firebase:firebase-bom:32.0.0"))
+    //implementation("com.google.firebase:firebase-firestore-ktx")
+    implementation("com.google.firebase:firebase-storage-ktx")
+    //implementation("com.google.firebase:firebase-firestore:24.6.0")
+
+    implementation("com.google.dagger:hilt-android:2.52")
+    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
+    kapt("com.google.dagger:hilt-android-compiler:2.52")
+
+
+
+    implementation ("io.ak1:drawbox:1.0.3")
+
     val nav_version = "2.7.5"
     val compose_version = "1.6.0-alpha06"
     val room = "2.6.0"

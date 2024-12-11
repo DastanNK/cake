@@ -1,5 +1,8 @@
 package com.dastan.cake.screen
 
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -20,11 +23,21 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.dastan.cake.data.CakeInfo
 import com.dastan.cake.data.CakeOrder
+import com.dastan.cake.data.Screens
+import com.dastan.cake.domain.FirebaseViewModel
 import com.dastan.cake.domain.InfoViewModel
 import com.dastan.cake.domain.OrderViewModel
 
 @Composable
-fun EachCakeScreen(viewModel: InfoViewModel,navController: NavController, cakeInfo:CakeInfo, orderViewModel: OrderViewModel){
+fun EachCakeScreen(firebaseViewModel: FirebaseViewModel,navController: NavController, cakeInfo:CakeInfo, orderViewModel: OrderViewModel){
+    val imageUri by firebaseViewModel.imageUri.collectAsState()
+    val newImageImageLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+        uri?.let {
+            firebaseViewModel.postImage(uri)
+        }
+
+    }
+
     val choose = remember { mutableStateOf(0) }
     val selectedWeight = when (choose.value) {
         0 -> cakeInfo.weight?.weightSmall?: "N/A"
@@ -39,7 +52,7 @@ fun EachCakeScreen(viewModel: InfoViewModel,navController: NavController, cakeIn
         2 -> cakeInfo.price?.priceBig?: "N/A"
         else -> cakeInfo.price?.priceSmall?: "N/A"
     }
-    Column {
+    Column(modifier = Modifier.fillMaxSize()) {
         Row{
             Icon(Icons.Default.Clear, contentDescription = null, modifier = Modifier.clickable { navController.navigateUp() })
             Text(cakeInfo.title.toString())
@@ -57,7 +70,8 @@ fun EachCakeScreen(viewModel: InfoViewModel,navController: NavController, cakeIn
                         description = cakeInfo.description?:"",
                         price = selectedPrice,
                         weight = selectedWeight,
-                        quantity = 1
+                        quantity = 1,
+                        imageUri = imageUri?:""
                     )
                 )
                 navController.navigateUp()
@@ -69,6 +83,15 @@ fun EachCakeScreen(viewModel: InfoViewModel,navController: NavController, cakeIn
 
             }
         }
+        Column {
+            Text("Customize Your Cake", modifier = Modifier.clickable {
+                navController.navigate(Screens.CustomScreen.route)
+            })
+            Text("Add photo to cake", modifier = Modifier.clickable {
+                newImageImageLauncher.launch("image/*")
+            })
+        }
+
 
 
     }

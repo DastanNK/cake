@@ -6,7 +6,7 @@ import androidx.room.RoomDatabase
 
 @Database(
     entities = [CakeOrder::class],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 abstract class CakeOrderDatabase: RoomDatabase() {

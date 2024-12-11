@@ -13,7 +13,7 @@ object Graph {
     }
 
     fun provide(context: Context){
-        database = Room.databaseBuilder(context, CakeOrderDatabase::class.java, "cake.db").build()
+        database = Room.databaseBuilder(context, CakeOrderDatabase::class.java, "newcake.db").build()
     }
 
 }

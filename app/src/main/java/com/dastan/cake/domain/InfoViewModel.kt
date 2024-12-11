@@ -30,7 +30,7 @@ class InfoViewModel:ViewModel() {
         viewModelScope.launch {
             try {
                 val response = RetrofitInstance.api.retrieveData()
-                Log.d("ViewModel", response.cake?.getOrNull(0)?.id ?: "No ID")
+                //Log.d("ViewModel", response.cake?.getOrNull(0)?.id ?: "No ID")
                 _itemState.value = _itemState.value.copy(
                     listCake = response.cake?: emptyList(),
                     loading = false,
