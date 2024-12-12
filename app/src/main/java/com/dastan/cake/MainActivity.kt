@@ -50,7 +50,7 @@ fun MyApp(){
     val orderViewModel:OrderViewModel= viewModel()
     NavHost(navController=navController, startDestination = Screens.HomeScreen.route){
         composable(Screens.HomeScreen.route){
-            HomeScreen(navController, infoViewModel)
+            HomeScreen(navController, infoViewModel, firebaseViewModel)
         }
         composable(
             route = Screens.EachCakeScreen.route,

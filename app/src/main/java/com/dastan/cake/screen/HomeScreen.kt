@@ -20,10 +20,11 @@ import androidx.navigation.NavController
 import com.dastan.cake.FindField
 import com.dastan.cake.data.CakeInfo
 import com.dastan.cake.data.Screens
+import com.dastan.cake.domain.FirebaseViewModel
 import com.dastan.cake.domain.InfoViewModel
 
 @Composable
-fun HomeScreen(navController: NavController, viewModel: InfoViewModel) {
+fun HomeScreen(navController: NavController, viewModel: InfoViewModel, firebaseViewModel: FirebaseViewModel) {
     val result by viewModel.retrieveItemState
     Column(
         modifier = Modifier
@@ -41,7 +42,7 @@ fun HomeScreen(navController: NavController, viewModel: InfoViewModel) {
             }
 
             else -> {
-                Items(result.listCake, navController)
+                Items(result.listCake, navController, firebaseViewModel)
             }
         }
 
@@ -60,22 +61,23 @@ fun HomeScreen(navController: NavController, viewModel: InfoViewModel) {
 }
 
 @Composable
-fun Items(results: List<CakeInfo>, navController: NavController) {
+fun Items(results: List<CakeInfo>, navController: NavController, firebaseViewModel: FirebaseViewModel) {
     LazyVerticalGrid(columns = GridCells.Fixed(2)) {
         items(results) { result ->
-            EachItems(result, navController)
+            EachItems(result, navController, firebaseViewModel)
         }
     }
 }
 
 @Composable
-fun EachItems(result: CakeInfo, navController: NavController) {
+fun EachItems(result: CakeInfo, navController: NavController, firebaseViewModel: FirebaseViewModel) {
     Box(
         modifier = Modifier
             .padding(8.dp)
             .clip(shape = RoundedCornerShape(10))
             .background(color = MaterialTheme.colorScheme.background)
             .clickable {
+                firebaseViewModel.setImageUri("")
                 navController.navigate(Screens.EachCakeScreen.createRoute(result))
             }
     ) {

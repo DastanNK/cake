@@ -19,18 +19,18 @@ import com.dastan.cake.data.CakeOrder
 import com.dastan.cake.domain.OrderViewModel
 
 @Composable
-fun CartScreen(navController: NavController, orderViewModel: OrderViewModel){
-    val allCakes=orderViewModel.getAllCakes.collectAsState(initial = emptyList()).value
+fun CartScreen(navController: NavController, orderViewModel: OrderViewModel) {
+    val allCakes = orderViewModel.getAllCakes.collectAsState(initial = emptyList()).value
     LazyColumn {
-        items(allCakes){cake->
+        items(allCakes) { cake ->
             EachCakeInCart(cake, orderViewModel)
         }
     }
 }
 
 @Composable
-fun EachCakeInCart(cake:CakeOrder, orderViewModel: OrderViewModel){
-    Row(modifier = Modifier.fillMaxWidth().padding(8.dp)){
+fun EachCakeInCart(cake: CakeOrder, orderViewModel: OrderViewModel) {
+    Row(modifier = Modifier.fillMaxWidth().padding(8.dp)) {
         Column(modifier = Modifier.weight(3f)) {
             Text(cake.title)
             Text(cake.description, maxLines = 1, overflow = TextOverflow.Ellipsis)
@@ -40,13 +40,13 @@ fun EachCakeInCart(cake:CakeOrder, orderViewModel: OrderViewModel){
                 modifier = Modifier.height(24.dp).width(24.dp)
                     .clip(shape = RoundedCornerShape(40))
                     .background(color = colorScheme.onPrimary).clickable {
-                        if(cake.quantity==1){
+                        if (cake.quantity == 1) {
                             orderViewModel.deleteCake(cake)
-                        }else{
+                        } else {
                             orderViewModel.decreaseQuantityCake(cake)
                         }
                     }
-            ){
+            ) {
                 Text("-")
             }
             Text(cake.quantity.toString(), modifier = Modifier.weight(1f))
@@ -56,7 +56,7 @@ fun EachCakeInCart(cake:CakeOrder, orderViewModel: OrderViewModel){
                     .background(color = colorScheme.onPrimary).clickable {
                         orderViewModel.increaseQuantityCake(cake)
                     }
-            ){
+            ) {
                 Text("+")
             }
         }

@@ -14,13 +14,31 @@ import com.dastan.cake.fileToUri
 import com.dastan.cake.imageBitmapToBitmap
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class OrderViewModel(private val cakeOrderRepository: CakeOrderRepository=Graph.cakeOrderRepository):ViewModel() {
-    fun getACakeById(id:Long): Flow<CakeOrder> {
-        return cakeOrderRepository.getACakeById(id)
+class OrderViewModel(private val cakeOrderRepository: CakeOrderRepository = Graph.cakeOrderRepository) : ViewModel() {
+    private val _cakeOrder = MutableStateFlow<CakeOrder?>(null)
+    val cakeOrder: StateFlow<CakeOrder?> = _cakeOrder
+
+    private fun getACakeById(title: String, price: String): Flow<CakeOrder?> {
+        return cakeOrderRepository.getACakeById(title, price)
     }
-    fun addImageBitmap(imageBitmap:ImageBitmap, context: Context){
+
+    fun existenceOfItem(title: String, price: String) {
+
+
+        viewModelScope.launch {
+            getACakeById(title, price).collect { cake ->
+                _cakeOrder.value = cake
+
+            }
+        }
+
+    }
+
+    fun addImageBitmap(imageBitmap: ImageBitmap, context: Context) {
         val bitmap = imageBitmapToBitmap(imageBitmap)
 
         val file = bitmapToFile(context, bitmap)
@@ -28,22 +46,23 @@ class OrderViewModel(private val cakeOrderRepository: CakeOrderRepository=Graph.
         val uri = fileToUri(context, file)
     }
 
-    fun increaseQuantityCake(cakeOrder: CakeOrder){
+    fun increaseQuantityCake(cakeOrder: CakeOrder) {
         viewModelScope.launch(Dispatchers.IO) {
             val updatedCakeOrder = cakeOrder.copy(quantity = cakeOrder.quantity + 1)
             cakeOrderRepository.updateACake(updatedCakeOrder)
         }
     }
-    fun decreaseQuantityCake(cakeOrder: CakeOrder){
+
+    fun decreaseQuantityCake(cakeOrder: CakeOrder) {
         viewModelScope.launch(Dispatchers.IO) {
             val updatedCakeOrder = cakeOrder.copy(quantity = cakeOrder.quantity - 1)
             cakeOrderRepository.updateACake(updatedCakeOrder)
         }
     }
 
-    fun addCake(cakeOrder: CakeOrder){
+    fun addCake(cakeOrder: CakeOrder) {
         viewModelScope.launch(Dispatchers.IO) {
-            cakeOrderRepository.addACake(cakeOrder= cakeOrder)
+            cakeOrderRepository.addACake(cakeOrder = cakeOrder)
         }
     }
 
@@ -54,9 +73,10 @@ class OrderViewModel(private val cakeOrderRepository: CakeOrderRepository=Graph.
             getAllCakes = cakeOrderRepository.getAllCakes()
         }
     }
-    fun deleteCake(cakeOrder: CakeOrder){
+
+    fun deleteCake(cakeOrder: CakeOrder) {
         viewModelScope.launch(Dispatchers.IO) {
-            cakeOrderRepository.deleteACake(cakeOrder= cakeOrder)
+            cakeOrderRepository.deleteACake(cakeOrder = cakeOrder)
             getAllCakes = cakeOrderRepository.getAllCakes()
         }
     }

@@ -1,6 +1,9 @@
 package com.dastan.cake.screen
 
 import android.net.Uri
+import android.util.Log
+import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.animateColorAsState
@@ -19,6 +22,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.dastan.cake.data.CakeInfo
@@ -31,13 +35,14 @@ import com.dastan.cake.domain.OrderViewModel
 @Composable
 fun EachCakeScreen(firebaseViewModel: FirebaseViewModel,navController: NavController, cakeInfo:CakeInfo, orderViewModel: OrderViewModel){
     val imageUri by firebaseViewModel.imageUri.collectAsState()
+    val context=LocalContext.current
+
     val newImageImageLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
         uri?.let {
             firebaseViewModel.postImage(uri)
         }
 
     }
-
     val choose = remember { mutableStateOf(0) }
     val selectedWeight = when (choose.value) {
         0 -> cakeInfo.weight?.weightSmall?: "N/A"
@@ -45,12 +50,26 @@ fun EachCakeScreen(firebaseViewModel: FirebaseViewModel,navController: NavContro
         2 -> cakeInfo.weight?.weightBig?: "N/A"
         else -> cakeInfo.weight?.weightSmall?: "N/A"
     }
-
     val selectedPrice = when (choose.value) {
         0 -> cakeInfo.price?.priceSmall?: "N/A"
         1 -> cakeInfo.price?.priceMedium?: "N/A"
         2 -> cakeInfo.price?.priceBig?: "N/A"
         else -> cakeInfo.price?.priceSmall?: "N/A"
+    }
+    val cakeTitle = cakeInfo.title ?: ""
+    val cakePrice = selectedPrice
+
+    LaunchedEffect(cakeTitle, cakePrice) {
+        orderViewModel.existenceOfItem(cakeTitle, cakePrice)
+    }
+
+    val existId = remember {
+        mutableStateOf(false)
+    }
+    val existenceCakeOrder by orderViewModel.cakeOrder.collectAsState()
+
+    LaunchedEffect(existenceCakeOrder) {
+        existId.value = existenceCakeOrder != null
     }
     Column(modifier = Modifier.fillMaxSize()) {
         Row{
@@ -62,23 +81,33 @@ fun EachCakeScreen(firebaseViewModel: FirebaseViewModel,navController: NavContro
         Row{
             Text(text = selectedPrice)
             Box(modifier = Modifier.clickable {
-                orderViewModel.addCake(
+                if(firebaseViewModel.isProgress.value){
+                    Toast.makeText(context, "Please wait a second to retrive your image", Toast.LENGTH_SHORT).show()
+                }else{
+                    if(existId.value){
+                        orderViewModel.increaseQuantityCake(existenceCakeOrder!!)
+                    }else{
+                        orderViewModel.addCake(
 
-                    CakeOrder(
-                        //id= cakeInfo.id!!.toLong(),
-                        title = cakeInfo.title?:"",
-                        description = cakeInfo.description?:"",
-                        price = selectedPrice,
-                        weight = selectedWeight,
-                        quantity = 1,
-                        imageUri = imageUri?:""
-                    )
-                )
-                navController.navigateUp()
+                            CakeOrder(
+                                //id= cakeInfo.id!!.toLong(),
+                                title = cakeInfo.title?:"",
+                                description = cakeInfo.description?:"",
+                                price = selectedPrice,
+                                weight = selectedWeight,
+                                quantity = 1,
+                                imageUri = imageUri?:""
+                            )
+                        )
+                    }
+                    navController.navigateUp()
+                }
+
             }){
                 Row{
                     Icon(Icons.Default.Add, contentDescription = null)
                     Text("Добавить")
+
                 }
 
             }

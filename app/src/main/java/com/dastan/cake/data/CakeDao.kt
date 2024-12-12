@@ -19,8 +19,8 @@ abstract class CakeDao {
     @Delete
     abstract suspend fun deleteACake(cakeOrderEntity: CakeOrder)
 
-    @Query("Select * from `cake-table` where id=:id")
-    abstract fun getACakeById(id:Long): Flow<CakeOrder>
+    @Query("Select * from `cake-table` where `cake-title` = :title AND `cake-price` =:price")
+    abstract fun getACakeById(title:String, price:String): Flow<CakeOrder>
 
 
 }

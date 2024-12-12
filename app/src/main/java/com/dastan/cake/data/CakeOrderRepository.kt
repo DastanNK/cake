@@ -10,8 +10,8 @@ class CakeOrderRepository(private val cakeDao: CakeDao) {
 
     fun getAllCakes(): Flow<List<CakeOrder>> = cakeDao.getAllCakes()
 
-    fun getACakeById(id:Long) : Flow<CakeOrder> {
-        return cakeDao.getACakeById(id)
+    fun getACakeById(title:String, price:String) : Flow<CakeOrder> {
+        return cakeDao.getACakeById(title, price)
     }
 
     suspend fun updateACake(cakeOrder:CakeOrder){
