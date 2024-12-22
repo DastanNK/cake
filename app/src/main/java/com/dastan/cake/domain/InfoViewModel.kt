@@ -1,16 +1,14 @@
 package com.dastan.cake.domain
 
-import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dastan.cake.data.ItemState
-import com.dastan.cake.data.RetrofitInstance
+import com.dastan.cake.data.model.ItemState
+import com.dastan.cake.data.api.RetrofitInstance
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
@@ -30,7 +28,6 @@ class InfoViewModel:ViewModel() {
         viewModelScope.launch {
             try {
                 val response = RetrofitInstance.api.retrieveData()
-                //Log.d("ViewModel", response.cake?.getOrNull(0)?.id ?: "No ID")
                 _itemState.value = _itemState.value.copy(
                     listCake = response.cake?: emptyList(),
                     loading = false,

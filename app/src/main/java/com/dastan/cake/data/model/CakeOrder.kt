@@ -1,4 +1,4 @@
-package com.dastan.cake.data
+package com.dastan.cake.data.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -18,5 +18,7 @@ data class CakeOrder(@PrimaryKey(autoGenerate = true)
                      @ColumnInfo(name="cake-quantity")
                      val quantity:Int=0,
                      @ColumnInfo(name="cake-imageUri")
-                     val imageUri:String=""
+                     val imageUri:String="",
+                     @ColumnInfo(name="cake-image")
+                     val image:String=""
     )

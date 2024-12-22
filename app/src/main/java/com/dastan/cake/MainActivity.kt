@@ -15,15 +15,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.dastan.cake.data.CakeInfo
-import com.dastan.cake.data.Screens
+import com.dastan.cake.data.model.CakeInfo
+import com.dastan.cake.data.model.Screens
 import com.dastan.cake.domain.FirebaseViewModel
 import com.dastan.cake.domain.InfoViewModel
 import com.dastan.cake.domain.OrderViewModel
-import com.dastan.cake.screen.CartScreen
-import com.dastan.cake.screen.CustomScreen
-import com.dastan.cake.screen.EachCakeScreen
-import com.dastan.cake.screen.HomeScreen
+import com.dastan.cake.screen.*
 import com.dastan.cake.ui.theme.CakeTheme
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
@@ -68,6 +65,10 @@ fun MyApp(){
         composable(Screens.CustomScreen.route){
             CustomScreen(navController, orderViewModel)
         }
+        composable(Screens.CheckoutScreen.route){
+            CheckoutScreen(navController, orderViewModel)
+        }
+
     }
 
 }

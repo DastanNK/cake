@@ -58,11 +58,15 @@ fun FindField(viewModel: InfoViewModel) {
 
                 )
             },
-            modifier = Modifier.background(color = colorScheme.tertiary, shape = RoundedCornerShape(16.dp))
+            modifier = Modifier.background(color = colorScheme.background, shape = RoundedCornerShape(16.dp)).border(
+                width = 1.dp,
+                color = colorScheme.onBackground,
+                shape = RoundedCornerShape(16.dp)
+            )
                 .weight(1f).height(48.dp),
             placeholder = {
                 Text(
-                    "поиск",
+                    "Search cake...",
                     fontSize = 14.sp,
                     style = TextStyle(color = colorScheme.onSecondary),
                     overflow = TextOverflow.Ellipsis

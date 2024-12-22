@@ -1,6 +1,7 @@
 package com.dastan.cake.data
 
 import androidx.room.*
+import com.dastan.cake.data.model.CakeOrder
 import kotlinx.coroutines.flow.Flow
 
 @Dao

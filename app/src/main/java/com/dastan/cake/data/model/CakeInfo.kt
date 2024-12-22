@@ -1,4 +1,4 @@
-package com.dastan.cake.data
+package com.dastan.cake.data.model
 
 data class CakeResponse(
     val cake: List<CakeInfo>?= emptyList()
@@ -9,8 +9,8 @@ data class CakeInfo(
     val title: String?,
     val description: String?,
     val price: Price?,
-    val weight: Weight?
-
+    val weight: Weight?,
+    val image:String
 
 )
 

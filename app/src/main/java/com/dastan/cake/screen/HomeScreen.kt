@@ -14,12 +14,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
 import com.dastan.cake.FindField
-import com.dastan.cake.data.CakeInfo
-import com.dastan.cake.data.Screens
+import com.dastan.cake.data.model.CakeInfo
+import com.dastan.cake.data.model.Screens
 import com.dastan.cake.domain.FirebaseViewModel
 import com.dastan.cake.domain.InfoViewModel
 
@@ -86,8 +88,10 @@ fun EachItems(result: CakeInfo, navController: NavController, firebaseViewModel:
                 .padding(4.dp)
                 .fillMaxWidth()
         ) {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                AsyncImage(model=result.image, contentDescription = null, modifier = Modifier.width(160.dp).height(160.dp))
+            }
             Text(result.title?:"Торт", fontSize = 14.sp)
-            Text(result.description?:"Торт", fontSize = 12.sp)
             Row(verticalAlignment = Alignment.Bottom) {
                 Text("от", fontSize = 12.sp, modifier = Modifier.padding(end = 2.dp))
                 Text("${result.price?.priceSmall?:0} тг", fontSize = 16.sp)

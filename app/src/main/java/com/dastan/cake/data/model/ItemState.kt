@@ -1,4 +1,4 @@
-package com.dastan.cake.data
+package com.dastan.cake.data.model
 
 data class ItemState(
     val listCake: List<CakeInfo> = emptyList(),

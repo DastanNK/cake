@@ -1,4 +1,4 @@
-package com.dastan.cake.data
+package com.dastan.cake.data.model
 
 import android.net.Uri
 import com.google.gson.Gson
@@ -10,5 +10,6 @@ sealed class Screens (val route:String){
     object HomeScreen: Screens("Home")
     object CartScreen: Screens("Cart")
     object CustomScreen: Screens("Custom")
+    object CheckoutScreen: Screens("Checkout")
 
 }

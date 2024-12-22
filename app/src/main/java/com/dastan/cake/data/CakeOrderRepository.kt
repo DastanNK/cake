@@ -1,10 +1,11 @@
 package com.dastan.cake.data
 
+import com.dastan.cake.data.model.CakeOrder
 import kotlinx.coroutines.flow.Flow
 
 class CakeOrderRepository(private val cakeDao: CakeDao) {
 
-    suspend fun addACake(cakeOrder:CakeOrder){
+    suspend fun addACake(cakeOrder: CakeOrder){
         cakeDao.addACake(cakeOrder)
     }
 
@@ -14,7 +15,7 @@ class CakeOrderRepository(private val cakeDao: CakeDao) {
         return cakeDao.getACakeById(title, price)
     }
 
-    suspend fun updateACake(cakeOrder:CakeOrder){
+    suspend fun updateACake(cakeOrder: CakeOrder){
         cakeDao.updateACake(cakeOrder)
     }
 
