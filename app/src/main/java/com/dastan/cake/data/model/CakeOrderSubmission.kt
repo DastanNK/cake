@@ -1,6 +1,4 @@
-package com.dastan.cake.data
-
-import com.dastan.cake.data.model.CakeOrder
+package com.dastan.cake.data.model
 
 data class CakeOrderSubmission(
     val orders: List<CakeOrder>,

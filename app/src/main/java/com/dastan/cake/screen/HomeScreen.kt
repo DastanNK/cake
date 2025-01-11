@@ -7,6 +7,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,6 +25,7 @@ import com.dastan.cake.data.model.CakeInfo
 import com.dastan.cake.data.model.Screens
 import com.dastan.cake.domain.FirebaseViewModel
 import com.dastan.cake.domain.InfoViewModel
+import com.dastan.cake.R
 
 @Composable
 fun HomeScreen(navController: NavController, viewModel: InfoViewModel, firebaseViewModel: FirebaseViewModel) {
@@ -33,7 +35,23 @@ fun HomeScreen(navController: NavController, viewModel: InfoViewModel, firebaseV
             .fillMaxSize()
             .padding(8.dp)
     ) {
-        FindField(viewModel)
+        Row(modifier = Modifier.fillMaxWidth().padding(end=20.dp), horizontalArrangement = Arrangement.SpaceBetween){
+            FindField(viewModel)
+            Icon(painter = painterResource(R.drawable.cart_3), contentDescription = null,modifier = Modifier.padding(4.dp).height(40.dp).width(40.dp)
+                .clickable { navController.navigate(Screens.CartScreen.route) }
+            )
+            /*Box(modifier = Modifier
+                //.padding(8.dp)
+                //.clip(shape = RoundedCornerShape(10))
+                //.background(color = MaterialTheme.colorScheme.background)
+                .clickable {
+                    navController.navigate(Screens.CartScreen.route)
+                }){
+
+                //Text("Корзина")
+            }*/
+        }
+
         when {
             result.loading -> {
                 Text("Loading...")
@@ -45,18 +63,6 @@ fun HomeScreen(navController: NavController, viewModel: InfoViewModel, firebaseV
 
             else -> {
                 Items(result.listCake, navController, firebaseViewModel)
-            }
-        }
-
-        Column(verticalArrangement = Arrangement.Bottom, horizontalAlignment = Alignment.End){
-            Box(modifier = Modifier
-                .padding(8.dp)
-                .clip(shape = RoundedCornerShape(10))
-                .background(color = MaterialTheme.colorScheme.background)
-                .clickable {
-                    navController.navigate(Screens.CartScreen.route)
-                }){
-                    Text("Корзина")
             }
         }
     }

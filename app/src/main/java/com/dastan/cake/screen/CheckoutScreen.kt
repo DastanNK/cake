@@ -20,11 +20,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.dastan.cake.R
+import com.dastan.cake.data.model.CakeOrderSubmission
+import com.dastan.cake.data.model.Screens
 import com.dastan.cake.domain.OrderViewModel
+import com.dastan.cake.domain.PostViewModel
 
 @Composable
-fun CheckoutScreen(navController: NavController, orderViewModel: OrderViewModel) {
-    //val allCakes = orderViewModel.getAllCakes.collectAsState(initial = emptyList()).value
+fun CheckoutScreen(navController: NavController, orderViewModel: OrderViewModel, postViewModel: PostViewModel) {
+    val allCakes = orderViewModel.getAllCakes.collectAsState(initial = emptyList()).value
     val total by orderViewModel.totalPrice.collectAsState()
     val name = remember { mutableStateOf("") }
     val number = remember { mutableStateOf("") }
@@ -131,6 +134,16 @@ fun CheckoutScreen(navController: NavController, orderViewModel: OrderViewModel)
                         .clip(shape = RoundedCornerShape(20))
                         .background(color = colorScheme.onTertiary).clickable {
                             //Post Api and delete all order
+                            postViewModel.postApi(CakeOrderSubmission(
+                                orders = allCakes,
+                                address = address.value,
+                                number = number.value,
+                                name = name.value
+                            ))
+                            allCakes.forEach { allCake->
+                                orderViewModel.deleteCake(allCake)
+                            }
+                            navController.navigate(Screens.HomeScreen.route)
 
                         }, contentAlignment = Alignment.Center
                 ) {

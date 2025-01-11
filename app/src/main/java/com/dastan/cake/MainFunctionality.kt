@@ -41,8 +41,8 @@ import android.graphics.Color as OldColor
 fun FindField(viewModel: InfoViewModel) {
     val text = viewModel.queryText.collectAsState()
     Row(
-        modifier = Modifier.padding(start = 8.dp, end = 12.dp, bottom = 8.dp).fillMaxWidth(),
-        horizontalArrangement = Arrangement.Center
+        modifier = Modifier.padding(start = 8.dp, bottom = 8.dp),
+        //horizontalArrangement = Arrangement.Center
     ) {
 
         TextField(
@@ -63,7 +63,8 @@ fun FindField(viewModel: InfoViewModel) {
                 color = colorScheme.onBackground,
                 shape = RoundedCornerShape(16.dp)
             )
-                .weight(1f).height(48.dp),
+                //.weight(1f)
+                .height(48.dp).wrapContentWidth(),
             placeholder = {
                 Text(
                     "Search cake...",

@@ -15,11 +15,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.dastan.cake.data.CakeApiRepository
 import com.dastan.cake.data.model.CakeInfo
 import com.dastan.cake.data.model.Screens
 import com.dastan.cake.domain.FirebaseViewModel
 import com.dastan.cake.domain.InfoViewModel
 import com.dastan.cake.domain.OrderViewModel
+import com.dastan.cake.domain.PostViewModel
 import com.dastan.cake.screen.*
 import com.dastan.cake.ui.theme.CakeTheme
 import com.google.gson.Gson
@@ -45,6 +47,8 @@ fun MyApp(){
     val infoViewModel:InfoViewModel= viewModel()
     val firebaseViewModel = hiltViewModel<FirebaseViewModel>()
     val orderViewModel:OrderViewModel= viewModel()
+    val repository = CakeApiRepository()
+    val postViewModel=PostViewModel(repository)
     NavHost(navController=navController, startDestination = Screens.HomeScreen.route){
         composable(Screens.HomeScreen.route){
             HomeScreen(navController, infoViewModel, firebaseViewModel)
@@ -66,7 +70,7 @@ fun MyApp(){
             CustomScreen(navController, orderViewModel)
         }
         composable(Screens.CheckoutScreen.route){
-            CheckoutScreen(navController, orderViewModel)
+            CheckoutScreen(navController, orderViewModel, postViewModel =postViewModel )
         }
 
     }

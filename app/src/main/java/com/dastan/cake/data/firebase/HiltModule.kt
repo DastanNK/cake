@@ -1,5 +1,6 @@
 package com.dastan.cake.data.firebase
 
+import com.dastan.cake.data.CakeApiRepository
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
@@ -13,4 +14,5 @@ import dagger.hilt.android.components.ViewModelComponent
 class HiltModule {
     @Provides
     fun providesFirebaseStorage(): FirebaseStorage = Firebase.storage
+
 }
